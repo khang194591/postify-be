@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppConfigModule } from './configurations/config/config.module';
 import { PrismaModule } from './configurations/db/prisma.module';
-import { SecurityModule } from './security/security.module';
+import { SecurityModule } from './auth/auth.module';
 import { AppThrottlerModule } from './configurations/config/throttler.module';
 import { CaslModule } from './casl/casl.module';
 import { PostModule } from './resources/posts/post.module';

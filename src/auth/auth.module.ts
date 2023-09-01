@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { AppConfigModule } from 'src/configurations/config/config.module';
 import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
-import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth.guard';
+import { AuthService } from './auth.service';
+import { EnvKey } from 'src/constants/env';
 
 @Module({
   imports: [
@@ -13,9 +14,12 @@ import { AuthGuard } from './auth.guard';
       imports: [AppConfigModule],
       useFactory: async (configService: ConfigService) => ({
         global: true,
-        secret: configService.get('ACCESS_TOKEN_KEY'),
+        secret: configService.get(EnvKey.TOKEN_KEY),
         signOptions: {
-          expiresIn: Number(configService.get('ACCESS_TOKEN_DURATION')),
+          expiresIn: configService.get(EnvKey.TOKEN_DURATION),
+        },
+        verifyOptions: {
+          ignoreExpiration: false,
         },
       }),
       inject: [ConfigService],

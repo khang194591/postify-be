@@ -1,0 +1,8 @@
+@base_url = http://localhost:8080/api/v1
+
+POST {{base_url}}/auth/sign-in
+Content-Type: application/json
+
+{
+
+}

@@ -34,7 +34,7 @@ function getExtendedClient() {
         // },
       },
       result: {
-        profile: {
+        user: {
           fullName: {
             needs: { fName: true, lName: true },
             compute(data) {

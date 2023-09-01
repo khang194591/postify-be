@@ -16,8 +16,8 @@ import { PostService } from './post.service';
 import { PoliciesGuard } from 'src/casl/casl.guard';
 import { AppAbility } from 'src/casl/casl-ability.factory';
 import { CheckPolicies } from 'src/casl/casl.decorator';
-import { Action } from 'src/security/auth.enum';
-import { Public } from 'src/security/auth.decorator';
+import { Action } from 'src/auth/auth.enum';
+import { Public } from 'src/auth/auth.decorator';
 import { Request } from 'express';
 import { ReactionType } from '@prisma/client';
 
@@ -27,19 +27,19 @@ export class PostController {
 
   @Post()
   create(@Body() body: PostDto, @Req() req: Request) {
-    const authorId = req.user.userId;
+    const authorId = req.user.accountId;
     return this.postService.create({ ...body, authorId });
   }
 
   @Get()
   @Public()
   findAll(@Query('cursor') cursor: string, @Req() req: Request) {
-    return this.postService.findAll(+cursor, +req.user?.userId);
+    return this.postService.findAll(+cursor, +req.user?.accountId);
   }
 
   @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: string) {
-    return await this.postService.findById(+id);
+  async findOne(@Param('id', ParseIntPipe) id: string, @Req() req: Request) {
+    return await this.postService.findById(+id, +req.user?.accountId);
   }
 
   @Patch(':id')
@@ -64,7 +64,7 @@ export class PostController {
   ) {
     return this.postService.react(
       +postId,
-      req.user.userId,
+      req.user.accountId,
       type as ReactionType,
     );
   }

@@ -3,9 +3,9 @@ import { Post } from '@prisma/client';
 export class PostDto implements Post {
   id: number;
   title: string;
-  content: string;
-  published: boolean;
+  body: string;
+  authorId: number;
   createdAt: Date;
   updatedAt: Date;
-  authorId: number;
+  deleted: Date;
 }
